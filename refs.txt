@@ -1,0 +1,2 @@
+https://opm.phar.umich.edu/ to select the test proteins
+http://extremelearning.com.au/how-to-evenly-distribute-points-on-a-sphere-more-effectively-than-the-canonical-fibonacci-lattice/ to generate sphere points distribution
