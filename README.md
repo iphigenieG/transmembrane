@@ -9,6 +9,7 @@ Assignment and detection of a protein's transmembrane regions
 ```bash
 git clone https://github.com/iphigenieG/transmembrane.git
 ```
+go into the created directory
 ```bash
 cd ./transmembrane
 ```
@@ -17,7 +18,7 @@ cd ./transmembrane
 
 Install [miniconda](https://docs.conda.io/en/latest/miniconda.html)
 
-for more speed install mamba:
+And for more speed install [mamba](https://mamba.readthedocs.io/en/latest/):
 ```bash
 conda install mamba -n base -c conda-forge
 ```
@@ -27,7 +28,7 @@ conda install mamba -n base -c conda-forge
 ```bash
 conda env create -f transmembrane.yml
 ```
-or
+or (recommended)
 
 ```bash
 mamba create -f transmembrane.yml
@@ -38,7 +39,7 @@ mamba create -f transmembrane.yml
 conda activate transmembrane
 ```
 
-### Quit the conda environment:
+### Quit the conda environment when done:
 ```
 conda deactivate
 ```
