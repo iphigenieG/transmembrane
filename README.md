@@ -11,7 +11,7 @@ git clone https://github.com/iphigenieG/transmembrane.git
 ```
 go into the created directory
 
-### install [miniconda](https://docs.conda.io/en/latest/miniconda.html).
+### install [miniconda](https://docs.conda.io/en/latest/miniconda.html)
 
 ### create the `transmembrane` conda environnement
 
