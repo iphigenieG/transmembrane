@@ -1,6 +1,6 @@
 # Transmembrane - short project
 
-Assignment and detection of a protein's transmembrane parts 
+Assignment and detection of a protein's transmembrane regions
 
 ## Set up the environnement
 
