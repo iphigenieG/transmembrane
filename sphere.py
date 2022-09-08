@@ -30,6 +30,6 @@ def fibonacci_sphere(samples=1000):
         z = math.sin(theta) * radius
 
         points.append((x, y, z))
-"""
 
     return points
+"""
