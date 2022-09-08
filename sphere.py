@@ -1,26 +1,17 @@
-from numpy import arange, pi, sin, cos, arccos
-n = 50
-goldenRatio = (1 + 5**0.5)/2
-i = arange(0, n)
-theta = 2 *pi * i / goldenRatio
-phi = arccos(1 - 2*(i+0.5)/n)
-x, y, z = cos(theta) * sin(phi), sin(theta) * sin(phi), cos(phi);
-
-
-"""
-autre option (à comprendre et modifier)
 import math
+import matplotlib.pyplot as plt
 
 
 def fibonacci_sphere(samples=1000):
 
-    points = []
+    xs = []
+    ys = []
+    zs = []
     phi = math.pi * (3. - math.sqrt(5.))  # golden angle in radians
 
-    for i in (samples / 2, samples):
-        y = ((i * offset) - 1) + (offset / 2) # y goes from 1 to -1
+    for i in range(samples):
 
-        y = 1 - (i / float(samples - 1)) * 2
+        y = 1 - (i / float(samples - 1)) # y goes from 1 to 0
 
         radius = math.sqrt(1 - y * y)  # radius at y
 
@@ -29,7 +20,21 @@ def fibonacci_sphere(samples=1000):
         x = math.cos(theta) * radius
         z = math.sin(theta) * radius
 
-        points.append((x, y, z))
+        xs.append(x)
+        ys.append(y)
+        zs.append(z)
 
-    return points
-"""
+    return xs,ys,zs
+
+xs,ys,zs = fibonacci_sphere()
+
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
+
+xs.append(0)
+ys.append(-1)
+zs.append(0)
+
+ax.scatter(xs, ys, zs)
+
+plt.show()
