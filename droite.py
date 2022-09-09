@@ -1,4 +1,4 @@
-def atom_is_transmembrane(atom):
+def atom_is_transmembrane(atom,xmin,ymin,zmin):
     sphere_point = (0,1,0)
     min_point = (xmin,ymin,zmin)
     membraine_width = 14
