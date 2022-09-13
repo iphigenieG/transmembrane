@@ -1,9 +1,3 @@
-""" This script scans a protein to find the best placement for a 14 angstrom wide membrane
-
-    Usage
-    -------
-    python sphere.py
-"""
 import math
 from hydrophobicity import hydrophobicity_score
 import membrane
@@ -54,25 +48,6 @@ class Sphere ():
             point_list.append(point)
 
         return point_list
-
-    def scan_prot(self,prot:skeleton.Skeleton,step=1.5):
-        max_score = 0  
-        for p in self.point_list :
-                norm = points.Vector(p.get())
-                start_point = prot.get_ymin()
-                start = membrane.Membrane(norm,start_point)
-                v = points.Vector(norm.get())
-                v.set(v.x*step,v.y*step,v.z*step)
-                while(start_point.y<=prot.get_ymax().y):
-                    in_residues = []
-                    for residue in prot.content():
-                        if (start.point_isin(residue.alpha)):
-                            in_residues.append(residue.name)
-                    if (len(in_residues)!=0):
-                        max_score = max(hydrophobicity_score(in_residues),max_score)
-                    v.move_point(start_point)
-                    start.move_membrane(start_point)
-        return max_score,start
     
     def show_scatter(self):
         fig = plt.figure()
@@ -85,36 +60,5 @@ class Sphere ():
 
 if __name__ == "__main__":
 
-    # sphere = Sphere(100)
-    # sphere.show_scatter()
-
-    prot = skeleton.Skeleton("1JDM","1jdm.pdb")
-    s = Sphere(25)
-    prot.center()
-    max,best_membrane = s.scan_prot(prot)
-    print(max)
-    print(best_membrane.start_point)
-
-    vect = best_membrane.norm
-    a = vect[0]
-    b = vect[1]
-    c = vect[2]
-
-    x = np.linspace(-10,10,20)
-    y = np.linspace(-10,10,20)
-
-    X,Y = np.meshgrid(x,y)
-    Z = (best_membrane.d1 - a*X - b*Y) / c
-    Z2 = (best_membrane.d2 - a*X - b*Y) / c
-    fig = plt.figure()
-    ax = fig.add_subplot(projection='3d')
-
-    ax.plot_surface(X, Y, Z) 
-    ax.plot_surface(X,Y,Z2)
-    
-    res_list = prot.content()
-    for residue in res_list:
-        point = residue.alpha.get()
-        ax.scatter(*point, color = "blue")
-
-    plt.show()
+    sphere = Sphere(100)
+    sphere.show_scatter()

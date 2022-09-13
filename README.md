@@ -35,11 +35,33 @@ mamba create -f transmembrane.yml
 ```
 
 ### Load the `transmembrane` conda environment:
-```
+```bash
 conda activate transmembrane
 ```
 
 ### Quit the conda environment when done:
 ```
 conda deactivate
+```
+## Exemple use to get started
+
+### Download a pdb file
+For this exemple let's download the protein from [this entry](https://opm.phar.umich.edu/proteins/154) in the OPM database.
+Either download the pdb  from your navigator or directly from the terminal like so:
+
+```bash
+wget https://files.rcsb.org/download/1JDM.pdb
+```
+
+### Use the main script to search for transmembrane regions
+
+The basic usage goes like this (after activating the conda environement as shown previously)
+
+```bash
+python main.py 1jdm.pdb
+```
+We can set the step in angstrom between membrane positions from one iteration to next (defaults to 1.5)
+
+```bash
+python main.py 1jdm.pdb 1
 ```
