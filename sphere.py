@@ -1,15 +1,41 @@
+""" This script scans a protein to find the best placement for a 14 angstrom wide membrane
+
+    Usage
+    -------
+    python sphere.py
+"""
 import math
 from hydrophobicity import hydrophobicity_score
 import membrane
 import points
 import skeleton
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+import numpy as np
 
 class Sphere ():
+    """
+    A class to represent points on a hemisphere.
+
+    Attributes
+    ----------
+    samples : int
+        number of point to distribute on the half sphere
+
+    Methods
+    -------
+    __fibonacci_sphere(samples):
+        Generates the points distributed on the hemisphere.
+
+        This method uses the Fibonacci lattice sphere algorithm 
+        to generate the hemisphere points distribution
+        as implemented here : 
+        https://stackoverflow.com/a/26127012 
+    """
     def __init__(self,samples=100):
         self.point_list = self.__fibonacci_sphere(samples)
 
     def __fibonacci_sphere(self,samples):
+
         point_list = []
         phi = math.pi * (3. - math.sqrt(5.))  # golden angle in radians
 
@@ -47,23 +73,48 @@ class Sphere ():
                     v.move_point(start_point)
                     start.move_membrane(start_point)
         return max_score,start
-#     def show_scatter(self):
-#         fig = plt.figure()
-#         ax = fig.add_subplot(projection='3d')
+    
+    def show_scatter(self):
+        fig = plt.figure()
+        ax = fig.add_subplot(projection='3d')
 
-#         for point in self.point_list :
-#             ax.scatter3D(*(point.get()), color = "blue")
-#         ax.scatter(0,-1,0, color="red")
-#         plt.show()
-
-# if __name__ == "__main__":
-#     sphere = Sphere(100)
-#     sphere.show_scatter()
+        for point in self.point_list :
+            ax.scatter(*(point.get()), color = "blue")
+        ax.scatter(0,-1,0, color="red")
+        plt.show()
 
 if __name__ == "__main__":
+
+    # sphere = Sphere(100)
+    # sphere.show_scatter()
+
     prot = skeleton.Skeleton("1JDM","1jdm.pdb")
     s = Sphere(25)
     prot.center()
     max,best_membrane = s.scan_prot(prot)
     print(max)
     print(best_membrane.start_point)
+
+    vect = best_membrane.norm
+    a = vect[0]
+    b = vect[1]
+    c = vect[2]
+
+    x = np.linspace(-10,10,20)
+    y = np.linspace(-10,10,20)
+
+    X,Y = np.meshgrid(x,y)
+    Z = (best_membrane.d1 - a*X - b*Y) / c
+    Z2 = (best_membrane.d2 - a*X - b*Y) / c
+    fig = plt.figure()
+    ax = fig.add_subplot(projection='3d')
+
+    ax.plot_surface(X, Y, Z) 
+    ax.plot_surface(X,Y,Z2)
+    
+    res_list = prot.content()
+    for residue in res_list:
+        point = residue.alpha.get()
+        ax.scatter(*point, color = "blue")
+
+    plt.show()
