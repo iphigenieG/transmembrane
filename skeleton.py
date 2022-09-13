@@ -22,19 +22,40 @@ class Skeleton:
 
                 acc = dssp[dssp.keys()[i]][3]
                 self.residue_list.append(Residue(coords,residue.get_resname(),acc))
-        self.center_x = sum(x)/len(x)
-        self.center_y = sum(y)/len(y)
-        self.center_z = sum(z)/len(z)
+        center_x = sum(x)/len(x)
+        center_y = sum(y)/len(y)
+        center_z = sum(z)/len(z)
+        self.start_center = points.Coord(center_x,center_y,center_z)
+        self.curr_center = points.Coord(center_x,center_y,center_z)
+        ymin_index = y.index(min(y))
+        self.ymin_point = points.Coord(x[ymin_index],y[ymin_index],z[ymin_index])
+        ymax_index = y.index(max(y))
+        self.ymax_point = points.Coord(x[ymax_index],y[ymax_index],z[ymax_index])
     
+    def get_ymin(self):
+        return self.ymin_point
+
+    def get_ymax(self):
+        return self.ymax_point
+
     def content(self):
+        return self.residue_list
+
+    def print_content(self):
         for residue in self.residue_list:
             residue.info()
     
     def center(self):
-        delta = points.Vector([-self.center_x,-self.center_y,-self.center_z])
+        delta = points.Vector(self.curr_center.get())
+        for residue in self.residue_list :
+            residue.antimove(delta)
+        self.curr_center = points.Coord(0,0,0)
+
+    def reset_pos(self):
+        delta = points.Vector(self.start_center.get())
         for residue in self.residue_list :
             residue.move(delta)
-
+        self.curr_center = self.start_center
 
 class Residue:
     """residue in protein"""
@@ -46,15 +67,17 @@ class Residue:
 
     def move(self,delta: points.Vector):
         delta.move_point(self.alpha)
+    
+    def antimove(self,delta: points.Vector):
+        delta.antimove_point(self.alpha)
 
     def info(self):
         print(f"{self.name} : {self.alpha.get()} ACC = {self.acc}")
 
 if __name__ == "__main__":
     prot = Skeleton("1JDM","1jdm.pdb")
-    prot.content()
+    prot.print_content()
     prot.center()
-    print(prot.center_x)
-    print(prot.center_y)
-    print(prot.center_z)
-    prot.content()
+    prot.print_content()
+    prot.reset_pos()
+    prot.print_content()

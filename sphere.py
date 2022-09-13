@@ -1,5 +1,8 @@
 import math
+from hydrophobicity import hydrophobicity_score
+import membrane
 import points
+import skeleton
 #import matplotlib.pyplot as plt
 
 class Sphere ():
@@ -26,6 +29,24 @@ class Sphere ():
 
         return point_list
 
+    def scan_prot(self,prot:skeleton.Skeleton,step=1.5):
+        max_score = 0  
+        for p in self.point_list :
+                norm = points.Vector(p.get())
+                start_point = prot.get_ymin()
+                start = membrane.Membrane(norm,start_point)
+                v = points.Vector(norm.get())
+                v.set(v.x*step,v.y*step,v.z*step)
+                while(start_point.y<=prot.get_ymax().y):
+                    in_residues = []
+                    for residue in prot.content():
+                        if (start.point_isin(residue.alpha)):
+                            in_residues.append(residue.name)
+                    if (len(in_residues)!=0):
+                        max_score = max(hydrophobicity_score(in_residues),max_score)
+                    v.move_point(start_point)
+                    start.move_membrane(start_point)
+        return max_score,start
 #     def show_scatter(self):
 #         fig = plt.figure()
 #         ax = fig.add_subplot(projection='3d')
@@ -38,3 +59,11 @@ class Sphere ():
 # if __name__ == "__main__":
 #     sphere = Sphere(100)
 #     sphere.show_scatter()
+
+if __name__ == "__main__":
+    prot = skeleton.Skeleton("1JDM","1jdm.pdb")
+    s = Sphere(25)
+    prot.center()
+    max,best_membrane = s.scan_prot(prot)
+    print(max)
+    print(best_membrane.start_point)
