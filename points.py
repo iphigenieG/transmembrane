@@ -27,5 +27,5 @@ class Vector(Coord):
         delta = self.get()
         for i in range(3):
             coords[i]=coords[i]+delta[i]
-        point.set(coords)
+        point.set(coords[0],coords[1],coords[2])
 
