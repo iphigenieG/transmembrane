@@ -7,7 +7,7 @@ class Coord:
         self.z = z
 
     def get(self):
-        return list(self.x,self.y,self.z)
+        return [self.x,self.y,self.z]
 
     def set(self,x,y,z):
         self.x = x
@@ -17,7 +17,7 @@ class Coord:
 class Point(Coord):
     def __init__(self, coord_list):
         super().__init__(coord_list[0], coord_list[1], coord_list[2])
-
+    
 class Vector(Coord):
     def __init__(self, coord_list):
         super().__init__(coord_list[0], coord_list[1], coord_list[2])
