@@ -15,13 +15,13 @@ class Skeleton:
         z = []
         for chain in model:
             for i,residue in enumerate(chain):
-                coords = list(residue['CA'].get_coord())
-                x.append(coords[0])
-                y.append(coords[1])
-                z.append(coords[2])
-
                 acc = dssp[dssp.keys()[i]][3]
-                self.residue_list.append(Residue(coords,residue.get_resname(),acc))
+                if (acc > 0.25):
+                    coords = list(residue['CA'].get_coord())
+                    x.append(coords[0])
+                    y.append(coords[1])
+                    z.append(coords[2])
+                self.residue_list.append(Residue(coords,residue.get_resname()))
         center_x = sum(x)/len(x)
         center_y = sum(y)/len(y)
         center_z = sum(z)/len(z)
@@ -60,10 +60,9 @@ class Skeleton:
 class Residue:
     """residue in protein"""
     
-    def __init__(self,coords, name, acc):
+    def __init__(self,coords, name):
         self.alpha = points.Coord(*coords)
         self.name = name
-        self.acc = acc
 
     def move(self,delta: points.Vector):
         delta.move_point(self.alpha)
@@ -72,7 +71,7 @@ class Residue:
         delta.antimove_point(self.alpha)
 
     def info(self):
-        print(f"{self.name} : {self.alpha.get()} ACC = {self.acc}")
+        print(f"{self.name} : {self.alpha.get()}")
 
 if __name__ == "__main__":
     prot = Skeleton("1JDM","1jdm.pdb")
