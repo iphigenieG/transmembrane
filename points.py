@@ -13,19 +13,15 @@ class Coord:
         self.x = x
         self.y = y
         self.z = z
-
-class Point(Coord):
-    def __init__(self, coord_list):
-        super().__init__(coord_list[0], coord_list[1], coord_list[2])
     
 class Vector(Coord):
     def __init__(self, coord_list):
-        super().__init__(coord_list[0], coord_list[1], coord_list[2])
+        super().__init__(*coord_list)
     
-    def move_point(self, point : Point):
+    def move_point(self, point : Coord):
         coords = point.get()
         delta = self.get()
         for i in range(3):
             coords[i]=coords[i]+delta[i]
-        point.set(coords[0],coords[1],coords[2])
+        point.set(*coords)
 

@@ -40,7 +40,7 @@ class Residue:
     """residue in protein"""
     
     def __init__(self,coords, name, acc):
-        self.alpha = points.Point(coords)
+        self.alpha = points.Coord(*coords)
         self.name = name
         self.acc = acc
 
