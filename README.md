@@ -60,8 +60,8 @@ The basic usage goes like this (after activating the conda environement as shown
 ```bash
 python main.py 1jdm.pdb
 ```
-We can set the step in angstrom between membrane positions from one iteration to next (defaults to 1.5)
+We can manually set the width of the membrane in angstrom (defaults to 14)
 
 ```bash
-python main.py 1jdm.pdb 1
+python main.py 1jdm.pdb 22
 ```

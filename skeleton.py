@@ -1,9 +1,43 @@
+import copy
 from Bio.PDB import PDBParser
 from Bio.PDB.DSSP import DSSP
 import points
 
 class Skeleton:
-    """alpha carbon skeleton of protein"""
+    """Skeleton class to represent the Alpha Carbons of the protein chain.
+
+    Attributes
+    ----------
+    residue_list: list of objets of class Residue
+        list of objects representing tha Alpha Carbons of the protein
+
+    start_center: instance of class points.Coord 
+        coordinates of the initial center of mass of the protein as in the pdb file
+
+    curr_center: instance of class points.Coord
+        coordinates of the center of mass of the protein in its current possition
+
+    ymin_point: instance of class points.Coord
+        coordinates of the alpha carbon with the smallest value of y
+
+    ymax_point: instance of class points.Coord
+        coordinates of the alpha carbon with the bigest value of y
+
+    Methods
+    -------
+    get ymin(), get_ymax(): 
+        returns a list of values for the coordinates of ymin_point and ymax_point(), respectively
+
+    content():
+        returns a copy of the residue_list attribute
+
+    print_content():
+        prints information for each alpha carbon of the residue_list
+
+    center(), reset_pos():
+        moves the coordinates of the alpha carbons of the residue list to center the protein or reset the coordinates to their initial value
+
+    """
 
     def __init__(self, prot_id:str, prot_file:str):
         p = PDBParser()
@@ -33,13 +67,13 @@ class Skeleton:
         self.ymax_point = points.Coord(x[ymax_index],y[ymax_index],z[ymax_index])
     
     def get_ymin(self):
-        return self.ymin_point
+        return self.ymin_point.get()
 
     def get_ymax(self):
-        return self.ymax_point
+        return self.ymax_point.get()
 
     def content(self):
-        return self.residue_list
+        return copy.deepcopy(self.residue_list)
 
     def print_content(self):
         for residue in self.residue_list:
@@ -50,15 +84,36 @@ class Skeleton:
         for residue in self.residue_list :
             residue.antimove(delta)
         self.curr_center = points.Coord(0,0,0)
+        delta.antimove_point(self.ymin_point)
+        delta.antimove_point(self.ymax_point)
 
     def reset_pos(self):
         delta = points.Vector(self.start_center.get())
         for residue in self.residue_list :
             residue.move(delta)
         self.curr_center = self.start_center
+        delta.move_point(self.ymin_point)
+        delta.move_point(self.ymax_point)
 
 class Residue:
-    """residue in protein"""
+    """ Residue class to represent a residue of a protein
+
+    Attributes
+    ----------
+    alpha : object of class points.Coord
+        coordinates of the alpha carbon linked to residue
+    name : str
+        tree letter code name of residue
+
+    Methods
+    -------
+    move(): 
+        takes input Vector delta and applies its transformation to the coordinates of the alpha attribute
+    antimove():
+        takes input Vector delta and move the coordinates by the opposite vector to delta
+    info():
+        prints a message showing attributes of the instance of self
+    """
     
     def __init__(self,coords, name):
         self.alpha = points.Coord(*coords)

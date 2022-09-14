@@ -5,6 +5,7 @@
     python main.py [pdb filename] | [step](optional)
 """
 import sys
+from turtle import width
 import sphere
 import skeleton
 import scanner
@@ -19,16 +20,21 @@ if __name__ == "__main__":
     prot = skeleton.Skeleton(id.capitalize(),prot_file)
     s = sphere.Sphere(25)
     if len(sys.argv) == 3 :
-        step = int(sys.argv[2])
-        if step <= 0 :
-            sys.exit("ERREUR : the step must be stricktly greater than zero")
-        scan = scanner.Scanner(step)
+        width= int(sys.argv[2])
+        if width <= 0 :
+            sys.exit("ERREUR : the membrane width must be strictly superior to zero")
+        scan = scanner.Scanner(width = width)
     else : scan = scanner.Scanner()
     prot.center()
     max,best_membrane = scan.scan_prot(s,prot)
     print(max)
     print(best_membrane.start_point)
+    for residue in prot.content():
+        if(best_membrane.point_isin(residue.alpha)) :
+            print(residue.name)
 
+
+    # plot the membrane and the CA skeleton of the protein together
     vect = best_membrane.norm
     a = vect[0]
     b = vect[1]

@@ -1,14 +1,9 @@
 import math
-from hydrophobicity import hydrophobicity_score
-import membrane
 import points
-import skeleton
 import matplotlib.pyplot as plt
-import numpy as np
 
 class Sphere ():
-    """
-    A class to represent points on a hemisphere.
+    """ Sphere class to represent points on a hemisphere.
 
     Attributes
     ----------
@@ -24,6 +19,9 @@ class Sphere ():
         to generate the hemisphere points distribution
         as implemented here : 
         https://stackoverflow.com/a/26127012 
+
+    show_scatter():
+        uses matplotib to visualise generated points in 3 dimensions
     """
     def __init__(self,samples=100):
         self.point_list = self.__fibonacci_sphere(samples)
@@ -55,7 +53,7 @@ class Sphere ():
 
         for point in self.point_list :
             ax.scatter(*(point.get()), color = "blue")
-        ax.scatter(0,-1,0, color="red")
+        ax.scatter(0,-1,0, color="lightgrey")
         plt.show()
 
 if __name__ == "__main__":
