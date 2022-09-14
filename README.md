@@ -2,6 +2,8 @@
 
 Assignment and detection of a protein's transmembrane regions
 
+WARNING DO NOT RUN THE SCRIPT IT LOOP INFINITELY
+
 ## Set up the environnement
 
 ### clone this repository
