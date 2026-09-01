@@ -50,8 +50,8 @@ class Skeleton:
         for chain in model:
             for i,residue in enumerate(chain):
                 acc = dssp[dssp.keys()[i]][3]
+                coords = list(residue['CA'].get_coord())
                 if (acc > 0.25):
-                    coords = list(residue['CA'].get_coord())
                     x.append(coords[0])
                     y.append(coords[1])
                     z.append(coords[2])

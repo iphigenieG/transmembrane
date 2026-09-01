@@ -5,7 +5,6 @@
     python main.py [pdb filename] | [step](optional)
 """
 import sys
-from turtle import width
 import sphere
 import skeleton
 import scanner
@@ -27,6 +26,9 @@ if __name__ == "__main__":
     else : scan = scanner.Scanner()
     prot.center()
     max,best_membrane = scan.scan_prot(s,prot)
+    if best_membrane is None:
+        sys.exit("No membrane-spanning region could be identified for this protein ")
+        
     print(max)
     print(best_membrane.start_point)
     for residue in prot.content():
