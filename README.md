@@ -1,8 +1,7 @@
 # Transmembrane - short project
 
 Assignment and detection of a protein's transmembrane regions
-
-WARNING DO NOT RUN THE SCRIPT IT LOOPS INFINITELY
+## TO DO: fix the starting point logic issue
 
 ## Set up the environnement
 
