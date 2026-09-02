@@ -2,10 +2,9 @@ name: transmembrane
 channels:
     - defaults
     - conda-forge
-    - salilab
 dependencies:
     - python=3.8
     - numpy
-    - dssp
+    - conda-forge::dssp=3.1.4
     - biopython
     - matplotlib>=3.2

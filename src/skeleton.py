@@ -42,20 +42,27 @@ class Skeleton:
     def __init__(self, prot_id:str, prot_file:str):
         p = PDBParser()
         model = p.get_structure(prot_id, prot_file)[0]
-        dssp = DSSP(model, prot_file)
+        dssp = DSSP(model, prot_file, dssp="mkdssp")
         self.residue_list = []
         x = []
         y = []
         z = []
+        skipped = 0
         for chain in model:
-            for i,residue in enumerate(chain):
-                acc = dssp[dssp.keys()[i]][3]
+            for residue in chain:
+                dssp_key = (chain.id, residue.id)
+                if dssp_key not in dssp:
+                    skipped += 1
+                    continue
+                acc = dssp[dssp_key][3]
                 coords = list(residue['CA'].get_coord())
                 if (acc > 0.25):
                     x.append(coords[0])
                     y.append(coords[1])
                     z.append(coords[2])
                 self.residue_list.append(Residue(coords,residue.get_resname()))
+        if skipped:
+            print(f"Skeleton: {skipped} residue(s) had no DSSP entry and were excluded")
         center_x = sum(x)/len(x)
         center_y = sum(y)/len(y)
         center_z = sum(z)/len(z)
